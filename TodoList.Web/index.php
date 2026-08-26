@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$apiBaseUrl = getenv('API_BASE_URL');
+$apiBaseUrl = getenv('API_BASE_URL') ?: ($_SERVER['API_BASE_URL'] ?? '');
 $apiBaseUrl = is_string($apiBaseUrl) ? rtrim($apiBaseUrl, '/') : '';
 
 $error = null;
@@ -144,20 +144,37 @@ if ($apiBaseUrl === '') {
         .empty { color: #737373; }
     </style>
     <?php
-    $aiConnectionString = getenv('APPLICATIONINSIGHTS_CONNECTION_STRING');
-    $aiConnectionString = is_string($aiConnectionString) ? $aiConnectionString : '';
-    ?>
-    <?php if ($aiConnectionString !== ''): ?>
-    <script src="https://js.monitor.azure.com/scripts/b/ai.2.min.js" crossorigin="anonymous"></script>
-    <script>
-        const appInsights = new Microsoft.ApplicationInsights.ApplicationInsights({
-            config: {
-                connectionString: <?= json_encode($aiConnectionString, JSON_THROW_ON_ERROR) ?>
-            }
-        });
-        appInsights.loadAppInsights();
-        appInsights.trackPageView();
-    </script>
+        $aiConnectionString = getenv('APPLICATIONINSIGHTS_CONNECTION_STRING');
+        $aiConnectionString = is_string($aiConnectionString) ? $aiConnectionString : '';
+        ?>
+
+        <?php if ($aiConnectionString !== ''): ?>
+        <script src="https://js.monitor.azure.com/scripts/b/ai.3.gbl.min.js"
+                crossorigin="anonymous"></script>
+
+        <script>
+            const init = new Microsoft.ApplicationInsights.ApplicationInsights({
+                config: {
+                    connectionString: <?= json_encode($aiConnectionString, JSON_THROW_ON_ERROR) ?>
+                }
+            });
+
+            const appInsights = init.loadAppInsights();
+
+            appInsights.addTelemetryInitializer((envelope) => {
+                envelope.tags = envelope.tags || {};
+                envelope.tags["ai.cloud.role"] = "TodoList.Web";
+                envelope.tags["ai.cloud.roleInstance"] = "TodoList.Web";
+            });
+
+            appInsights.trackPageView({
+                name: "TodoList Web"
+            });
+
+            appInsights.trackTrace({
+                message: "TodoList.Web Application Insights initialized"
+            });
+        </script>
     <?php endif; ?>
 </head>
 <body>
