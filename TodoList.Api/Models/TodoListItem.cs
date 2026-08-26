@@ -4,6 +4,6 @@
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        public List<TodoItem> Todos { get; set; } = new List<TodoItem>();
+        public List<TodoItem> Todos { get; set; } = [];
     }
 }

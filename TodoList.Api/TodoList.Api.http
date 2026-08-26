@@ -1,6 +1,60 @@
 @TodoList.Api_HostAddress = http://localhost:5068
 
-GET {{TodoList.Api_HostAddress}}/weatherforecast/
+### Create a todo list
+POST {{TodoList.Api_HostAddress}}/api/todolists
+Content-Type: application/json
+
+{
+  "title": "Groceries"
+}
+
+### Get all todo lists
+GET {{TodoList.Api_HostAddress}}/api/todolists
 Accept: application/json
 
-###
+### Get a todo list by id
+GET {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### Update a todo list
+PUT {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "title": "Weekly groceries"
+}
+
+### Delete a todo list
+DELETE {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000
+
+### Create a todo item
+POST {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000/items
+Content-Type: application/json
+
+{
+  "title": "Milk"
+}
+
+### Get all items in a list
+GET {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000/items
+Accept: application/json
+
+### Get a todo item by id
+GET {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000/items/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### Update a todo item
+PUT {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000/items/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "title": "Milk",
+  "isCompleted": true
+}
+
+### Delete a todo item
+DELETE {{TodoList.Api_HostAddress}}/api/todolists/00000000-0000-0000-0000-000000000000/items/00000000-0000-0000-0000-000000000000
+
+### OpenAPI spec
+GET {{TodoList.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
