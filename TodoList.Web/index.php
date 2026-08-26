@@ -143,6 +143,22 @@ if ($apiBaseUrl === '') {
         .done { text-decoration: line-through; opacity: 0.7; }
         .empty { color: #737373; }
     </style>
+    <?php
+    $aiConnectionString = getenv('APPLICATIONINSIGHTS_CONNECTION_STRING');
+    $aiConnectionString = is_string($aiConnectionString) ? $aiConnectionString : '';
+    ?>
+    <?php if ($aiConnectionString !== ''): ?>
+    <script src="https://js.monitor.azure.com/scripts/b/ai.2.min.js" crossorigin="anonymous"></script>
+    <script>
+        const appInsights = new Microsoft.ApplicationInsights.ApplicationInsights({
+            config: {
+                connectionString: <?= json_encode($aiConnectionString, JSON_THROW_ON_ERROR) ?>
+            }
+        });
+        appInsights.loadAppInsights();
+        appInsights.trackPageView();
+    </script>
+    <?php endif; ?>
 </head>
 <body>
     <h1>Todo lists</h1>
