@@ -3,6 +3,11 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# SQLite leftover database files
+*.db
+*.db-shm
+*.db-wal
+
 # dotenv files
 .env
 
@@ -478,5 +483,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Vim temporary swap files
+# Vim temporary swap file
 *.swp
+
+**/appsettings.Development.json
